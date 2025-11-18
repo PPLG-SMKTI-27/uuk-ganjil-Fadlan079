@@ -1,0 +1,11 @@
+<?php
+$action = $_GET['action'] ?? 'index';
+$id = $_GET['id'] ?? Null;
+
+switch($action){
+    case 'index':
+        break;
+    default:
+        http_response_code    
+}
+?>
