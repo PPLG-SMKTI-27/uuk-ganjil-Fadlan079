@@ -7,58 +7,74 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 
 <?php if(!$sessionUser): ?>
 
+<?php
+session_start();
+$sessionUser = $_SESSION['user'] ?? null;
+$role = $sessionUser['role'] ?? null;
+$username = $sessionUser['username'] ?? 'User'; // Ambil username jika ada
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Parkir Modern</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-gray-900 text-white min-h-screen antialiased">
+
+<?php if(!$sessionUser): ?>
 <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
 
-    <!-- HERO -->
-    <div class="pt-32 pb-24 px-6">
-           <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div class="pt-20 pb-16 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
 
-            <!-- KIRI -->
-            <div>
-                <h1 class="text-4xl lg:text-5xl font-extrabold text-cyan-400 leading-tight mb-6">
-                    Sistem Manajemen Parkir <br>
+            <div class="lg:w-1/2 text-center lg:text-left">
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-cyan-400 mb-4">
+                    Sistem Manajemen Parkir
                 </h1>
 
-                <p class="text-slate-300 text-lg mb-8 max-w-xl">
+                <p class="text-slate-300 text-base sm:text-lg mb-6 max-w-md lg:max-w-xl mx-auto lg:mx-0">
                     Kelola kendaraan masuk & keluar secara otomatis, lengkap dengan barcode, 
                     transaksi real-time, dan laporan profesional untuk usaha parkirmu.
                 </p>
 
-                <div class="flex gap-4">
+                <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
                     <a href="?action=login"
-                       class="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 text-slate-900 font-bold rounded-xl transition shadow-lg">
+                       class="px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-slate-900 font-bold rounded-xl transition shadow-md">
                         <i class="fa-solid fa-right-to-bracket mr-2"></i> Masuk Sekarang
                     </a>
 
                     <a href="#fitur"
-                       class="px-8 py-3 border border-slate-600 hover:border-cyan-400 rounded-xl text-slate-300 transition">
+                       class="px-6 py-2 border border-slate-600 hover:border-cyan-400 rounded-xl text-slate-300 transition">
                         Lihat Fitur
                     </a>
                 </div>
             </div>
 
-            <!-- KANAN (ICON VISUAL) -->
-            <div class="hidden lg:flex justify-center relative">
-                <div class="absolute w-72 h-72 bg-cyan-500/20 blur-3xl rounded-full"></div>
+            <div class="hidden lg:flex justify-center lg:w-1/2 relative">
+                <div class="absolute w-64 h-64 bg-cyan-500/20 blur-3xl rounded-full"></div>
 
-                <div class="grid grid-cols-2 gap-6 relative z-10">
-                    <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl text-center">
-                        <i class="fa-solid fa-ticket text-cyan-400 text-4xl mb-3"></i>
+                <div class="grid grid-cols-2 gap-4 relative z-10">
+                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center">
+                        <i class="fa-solid fa-ticket text-cyan-400 text-3xl mb-2"></i>
                         <p class="text-sm text-slate-300">Tiket Otomatis</p>
                     </div>
 
-                    <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl text-center">
-                        <i class="fa-solid fa-barcode text-purple-400 text-4xl mb-3"></i>
+                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center">
+                        <i class="fa-solid fa-barcode text-purple-400 text-3xl mb-2"></i>
                         <p class="text-sm text-slate-300">Barcode Unik</p>
                     </div>
 
-                    <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl text-center">
-                        <i class="fa-solid fa-money-bill-wave text-green-400 text-4xl mb-3"></i>
+                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center">
+                        <i class="fa-solid fa-money-bill-wave text-green-400 text-3xl mb-2"></i>
                         <p class="text-sm text-slate-300">Transaksi</p>
                     </div>
 
-                    <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl text-center">
-                        <i class="fa-solid fa-chart-line text-amber-400 text-4xl mb-3"></i>
+                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center">
+                        <i class="fa-solid fa-chart-line text-amber-400 text-3xl mb-2"></i>
                         <p class="text-sm text-slate-300">Laporan</p>
                     </div>
                 </div>
@@ -66,54 +82,94 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         </div>
     </div>
 
-    <!-- FITUR -->
-    <div id="fitur" class="pb-28 px-6">
-        <div class="max-w-7xl mx-auto">
-
-            <h2 class="text-3xl font-bold text-center text-cyan-400 mb-3">
+    <div id="fitur" class="pb-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-2xl sm:text-3xl font-bold text-cyan-400 mb-3">
                 Fitur Unggulan
             </h2>
 
-            <p class="text-center text-slate-400 mb-12">
+            <p class="text-slate-400 mb-10">
                 Semua yang kamu butuhkan untuk sistem parkir modern
             </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-                <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl hover:-translate-y-1 transition">
-                    <i class="fa-solid fa-ticket text-cyan-400 text-4xl mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Tiket Otomatis</h3>
-                    <p class="text-slate-300 text-sm">
-                        Setiap kendaraan masuk langsung mendapatkan tiket barcode unik.
-                    </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl hover:-translate-y-1 transition shadow-lg hover:shadow-cyan-500/20">
+                    <i class="fa-solid fa-ticket text-cyan-400 text-3xl mb-2"></i>
+                    <h3 class="text-lg font-semibold mb-1">Tiket Otomatis</h3>
+                    <p class="text-slate-300 text-sm">Setiap kendaraan masuk langsung mendapatkan tiket barcode unik.</p>
                 </div>
 
-                <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl hover:-translate-y-1 transition">
-                    <i class="fa-solid fa-cash-register text-green-400 text-4xl mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Transaksi Cepat</h3>
-                    <p class="text-slate-300 text-sm">
-                        Perhitungan tarif otomatis dan status pembayaran langsung tercatat.
-                    </p>
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl hover:-translate-y-1 transition shadow-lg hover:shadow-green-500/20">
+                    <i class="fa-solid fa-cash-register text-green-400 text-3xl mb-2"></i>
+                    <h3 class="text-lg font-semibold mb-1">Transaksi Cepat</h3>
+                    <p class="text-slate-300 text-sm">Perhitungan tarif otomatis dan status pembayaran langsung tercatat.</p>
                 </div>
 
-                <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl hover:-translate-y-1 transition">
-                    <i class="fa-solid fa-chart-pie text-purple-400 text-4xl mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Laporan Real-time</h3>
-                    <p class="text-slate-300 text-sm">
-                        Pendapatan, kendaraan masuk-keluar, dan statistik ditampilkan langsung.
-                    </p>
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl hover:-translate-y-1 transition shadow-lg hover:shadow-purple-500/20">
+                    <i class="fa-solid fa-chart-pie text-purple-400 text-3xl mb-2"></i>
+                    <h3 class="text-lg font-semibold mb-1">Laporan Real-time</h3>
+                    <p class="text-slate-300 text-sm">Pendapatan, kendaraan masuk-keluar, dan statistik ditampilkan langsung.</p>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <div class="border-t border-slate-700 py-6 text-center text-slate-400 text-sm">
-        © <?= date('Y') ?> Sistem Manajemen Parkir
-    </div>
 
 </div>
+
+<?php else: ?>
+<section class="py-16 px-6 max-w-7xl mx-auto">
+    <h2 class="text-4xl text-cyan-400 font-extrabold mb-8">Dashboard Pengawasan</h2>
+    
+    <p class="text-lg text-gray-300 mb-6">Halo, **<?= htmlspecialchars($username) ?>**. Pantau ringkasan statistik terkini:</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <?php if($role==='admin'): ?>
+        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl transition duration-300 hover:border-cyan-400">
+            <div class="flex items-center justify-between">
+                <i class="fa-solid fa-users text-2xl text-cyan-400"></i>
+                <p class="text-sm text-gray-400 uppercase font-semibold">Total Pengguna</p>
+            </div>
+            <h3 class="text-4xl font-extrabold mt-2"><?= $TotalUser ?? 0 ?></h3>
+            <p class="text-xs text-gray-500 mt-1">Total akun terdaftar</p>
+        </div>
+        <?php endif; ?>
+        
+        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl transition duration-300 hover:border-green-400">
+            <div class="flex items-center justify-between">
+                <i class="fa-solid fa-wallet text-2xl text-green-400"></i>
+                <p class="text-sm text-gray-400 uppercase font-semibold">Total Transaksi</p>
+            </div>
+            <h3 class="text-3xl font-extrabold mt-2 text-green-300">Rp <?= number_format($TotalBayar ?? 0,0,',','.') ?></h3>
+            <p class="text-xs text-gray-500 mt-1">Pendapatan hari ini/periode</p>
+        </div>
+        
+        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl transition duration-300 hover:border-blue-400">
+            <div class="flex items-center justify-between">
+                <i class="fa-solid fa-car-on text-2xl text-blue-400"></i>
+                <p class="text-sm text-gray-400 uppercase font-semibold">Total Masuk</p>
+            </div>
+            <h3 class="text-4xl font-extrabold mt-2"><?= $TotalMasuk ?? 0 ?></h3>
+            <p class="text-xs text-gray-500 mt-1">Kendaraan masuk (periode)</p>
+        </div>
+        
+        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl transition duration-300 hover:border-red-400">
+            <div class="flex items-center justify-between">
+                <i class="fa-solid fa-car-off text-2xl text-red-400"></i>
+                <p class="text-sm text-gray-400 uppercase font-semibold">Total Keluar</p>
+            </div>
+            <h3 class="text-4xl font-extrabold mt-2"><?= $TotalKeluar ?? 0 ?></h3>
+            <p class="text-xs text-gray-500 mt-1">Kendaraan keluar (periode)</p>
+        </div>
+    </div>
+</section>
+
+
+<?php endif; ?>
+
+</body>
+</html>
 
 
 <?php else: ?>
