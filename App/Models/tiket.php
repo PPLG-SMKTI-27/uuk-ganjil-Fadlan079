@@ -9,23 +9,27 @@ class Tiket{
         $this->pdo = $db->getConnection();
     }
 
+    public function SelectTiketPagination($limit, $offset){
+    $stmt = $this->pdo->prepare("SELECT * FROM tiket ORDER BY id_tiket DESC LIMIT ? OFFSET ?");
+    $stmt->bindValue(1, $limit, PDO::PARAM_INT);
+    $stmt->bindValue(2, $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function countAllTiket(){
+    return $this->pdo->query("SELECT COUNT(*) FROM tiket")->fetchColumn();
+}
+
 public function GetTiketByBarcode($barcode){
-    try {
-        $sql = "SELECT t.*, tr.harga_flat 
-                FROM tiket t
-                JOIN tarif_parkir tr ON tr.id_tarif = t.id_tarif
-                WHERE t.barcode = :barcode
-                AND t.status = 'masuk'";
+    $sql = "SELECT t.*, tr.harga_flat 
+            FROM tiket t
+            JOIN tarif_parkir tr ON tr.id_tarif = t.id_tarif
+            WHERE t.barcode = :barcode";
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(":barcode", $barcode);
-        $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-
-    } catch(PDOException $e){
-        return ['error' => $e->getMessage()];
-    }
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([':barcode' => trim($barcode)]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 
@@ -152,28 +156,40 @@ public function getTiketById($id)
             die("Query gagal :" . $e->getMessage());
         }
     }
+public function GetTiketAktifByBarcode($barcode){
+    $sql = "SELECT * FROM tiket 
+            WHERE barcode = :barcode 
+            AND status = 'masuk'
+            LIMIT 1";
 
-    public function UpdateTiketKeluar($barcode, $tgl_keluar, $id_petugas_keluar, $total_harga){
-        try{
-            $sql = "UPDATE tiket 
-                    SET tgl_keluar = :tgl_keluar,
-                        id_petugas_keluar = :id_petugas_keluar,
-                        total_harga = :total_harga,
-                        status = 'keluar'
-                    WHERE barcode = :barcode";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([':barcode' => $barcode]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(":barcode", $barcode);
-            $stmt->bindParam(":tgl_keluar", $tgl_keluar);
-            $stmt->bindParam(":id_petugas_keluar", $id_petugas_keluar);
-            $stmt->bindParam(":total_harga", $total_harga);
 
-            return $stmt->execute();
+public function UpdateTiketKeluar($barcode, $tgl_keluar, $id_petugas_keluar, $total_harga){
+    $sql = "UPDATE tiket 
+            SET tgl_keluar = :tgl_keluar,
+                id_petugas_keluar = :id_petugas_keluar,
+                total_harga = :total_harga,
+                status = 'keluar'
+            WHERE barcode = :barcode
+            AND status = 'masuk'";
 
-        } catch(PDOException $e){
-            die("Query gagal : " . $e->getMessage());
-        }
-    }
+    $stmt = $this->pdo->prepare($sql);
+
+    $stmt->execute([
+        ':barcode' => trim($barcode),
+        ':tgl_keluar' => $tgl_keluar,
+        ':id_petugas_keluar' => $id_petugas_keluar,
+        ':total_harga' => $total_harga
+    ]);
+
+    return $stmt->rowCount(); // ✅ PENTING
+}
+
+
 
     public function DeleteTiket($id_tiket){
         try{
@@ -188,7 +204,7 @@ public function getTiketById($id)
 
 $tiket = new Tiket();
 // $tiket->InsertTiketMasuk("KT 1824 BS","mobil",2,"2025-11-19 09:37:00",1,"masuk");
-// $tiket->UpdateTiketKeluar(2214385623602,"2025-11-19 10:37:00",1,10000,"keluar");
+// $tiket->UpdateTiketKeluar(8079059781058,"2025-10-12 09:31:00",1,10000,"keluar");
 // $tiket->DeleteTiket(3);
 // $data = $tiket->SelectTiket();
 // $data = $tiket->GetTiketByBarcode("3155239835524");

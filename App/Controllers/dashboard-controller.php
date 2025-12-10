@@ -17,30 +17,48 @@ class DASHBOARDController{
         $this->modelTarif = new TarifParkir();
     }
 
-    public function index(){
-        $current = 'index';
-        $limit = 5;
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $page = max($page, 1);
-        $p = ($page - 1) * $limit + 1;
+public function index(){
+    $current = 'index';
+    $limit = 5;
 
-        $offset = ($page - 1) * $limit;
+    // ================= USER PAGINATION =================
+    $pageUser = isset($_GET['page_user']) ? (int)$_GET['page_user'] : 1;
+    $pageUser = max(1, $pageUser);
+    $offsetUser = ($pageUser - 1) * $limit;
 
-        $listUser = $this->modelUser->Select($limit, $offset);
+    $listUser = $this->modelUser->Select($limit, $offsetUser);
+    $totalUser = $this->modelUser->countUser();
+    $totalPagesUser = ceil($totalUser / $limit);
+    $p = ($pageUser - 1) * $limit + 1;
 
-        $totalData = $this->modelUser->countUser();
-        $totalPages = ceil($totalData / $limit);
+    // ================= TIKET PAGINATION =================
+    $pageTiket = isset($_GET['page_tiket']) ? (int)$_GET['page_tiket'] : 1;
+    $pageTiket = max(1, $pageTiket);
+    $offsetTiket = ($pageTiket - 1) * $limit;
 
-        $totalbayar = $this->modelTransaksi->TotalBayar();
-        $listTiket = $this->modelTiket->SelectTiket();
-        $listTransaksi = $this->modelTransaksi->GetAllTransaksi();
-        
-        $TotalUser = $this->modelUser->countuser();
-        $Totalmasuk = $this->modelTiket->countTiketMasuk();
-        $Totalkeluar = $this->modelTiket->countTiketKeluar();
-        $Totaltransaksi = $this->modelTransaksi->countTransaksi();
-        include __DIR__ . "/../../Resources/Views/index.php";
-    }
+    $listTiket = $this->modelTiket->SelectTiketPagination($limit, $offsetTiket);
+    $totalTiket = $this->modelTiket->countAllTiket();
+    $totalPagesTiket = ceil($totalTiket / $limit);
+
+    // ================= TRANSAKSI PAGINATION =================
+    $pageTrx = isset($_GET['page_trx']) ? (int)$_GET['page_trx'] : 1;
+    $pageTrx = max(1, $pageTrx);
+    $offsetTrx = ($pageTrx - 1) * $limit;
+
+    $listTransaksi = $this->modelTransaksi->SelectPagination($limit, $offsetTrx);
+    $totalTrx = $this->modelTransaksi->countTransaksi();
+    $totalPagesTrx = ceil($totalTrx / $limit);
+
+    // ================= DASHBOARD COUNTER =================
+    $totalbayar = $this->modelTransaksi->TotalBayar();
+    $TotalUser = $this->modelUser->countuser();
+    $Totalmasuk = $this->modelTiket->countTiketMasuk();
+    $Totalkeluar = $this->modelTiket->countTiketKeluar();
+    $Totaltransaksi = $this->modelTransaksi->countTransaksi();
+
+    include __DIR__ . "/../../Resources/Views/index.php";
+}
+
 
     public function ShowTiketMasuk(){
         $data_tarif = $this->modelTarif->SelectTarif();
@@ -146,38 +164,71 @@ public function HapusTiket() {
         include __DIR__ . "/../../Resources/Views/components/tiket-keluar.php";
     }
 
-    public function UpdateTiketKeluar() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+public function UpdateTiketKeluar() {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
-            $barcode = $_POST['barcode'];
-            $tgl_keluar = date("Y-m-d H:i:s");
-            $id_petugas_keluar = $_SESSION['user']['id_user'];
-            $total_harga = $_POST['total_harga'];
+    $barcode = trim($_POST['barcode'] ?? '');
+    $total_harga = intval(str_replace('.', '', $_POST['total_harga'] ?? 0));
+    $metode = 'cash'; // default (bisa kamu buat dropdown nanti)
 
-            $update = $this->modelTiket->UpdateTiketKeluar(
-                $barcode,
-                $tgl_keluar,
-                $id_petugas_keluar,
-                $total_harga
-            );
-
-            if ($update) {
-                $_SESSION['flash'] = [
-                    'type' => 'success',
-                    'msg'  => 'Tiket Berhasil Di Selesaikan!'
-                ];
-                header("Location: ?action=tiket-keluar&success=1");
-                exit;
-            } else {
-                $_SESSION['flash'] = [
-                    'type' => 'error',
-                    'msg'  => 'Tiket gagal Di Selesaikan'
-                ];
-                header("Location: ?action=tiket-keluar");
-                exit;
-            }
-        }
+    if ($barcode === '' || $total_harga <= 0) {
+        $_SESSION['flash'] = [
+            'type' => 'error',
+            'msg'  => 'Data tidak valid! Scan ulang barcode.'
+        ];
+        header("Location: ?action=tiket-keluar");
+        exit;
     }
+
+    $tgl_keluar = date("Y-m-d H:i:s");
+    $id_petugas_keluar = $_SESSION['user']['id_user'];
+
+    // ✅ AMBIL DATA TIKET AKTIF
+    $tiket = $this->modelTiket->GetTiketAktifByBarcode($barcode);
+
+    if (!$tiket) {
+        $_SESSION['flash'] = [
+            'type' => 'error',
+            'msg'  => 'Tiket tidak ditemukan / sudah keluar!'
+        ];
+        header("Location: ?action=tiket-keluar");
+        exit;
+    }
+
+    // ✅ UPDATE TIKET KELUAR
+    $update = $this->modelTiket->UpdateTiketKeluar(
+        $barcode,
+        $tgl_keluar,
+        $id_petugas_keluar,
+        $total_harga
+    );
+
+    if ($update <= 0) {
+        $_SESSION['flash'] = [
+            'type' => 'error',
+            'msg'  => 'Gagal update tiket!'
+        ];
+        header("Location: ?action=tiket-keluar");
+        exit;
+    }
+
+    // ✅ AUTO INSERT TRANSAKSI
+    $this->modelTransaksi->InsertTransaksiAuto(
+        $tiket['id_tiket'],
+        $total_harga,
+        $metode
+    );
+
+    $_SESSION['flash'] = [
+        'type' => 'success',
+        'msg'  => 'Tiket selesai & pembayaran berhasil!'
+    ];
+
+    header("Location: ?action=tiket-keluar");
+    exit;
+}
+
+
 
     public function ShowInsertTarif(){
         include __DIR__ . "/../../Resources/Views/components/form-tambah-tarif.php";

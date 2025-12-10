@@ -7,21 +7,117 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 
 <?php if(!$sessionUser): ?>
 
-    <!-- TAMPILAN JIKA BELUM LOGIN -->
-    <div class="text-center py-20">
-        <i class="fa-solid fa-lock text-cyan-400 text-7xl mb-6"></i>
-        <h2 class="text-3xl font-bold text-cyan-400 mb-4">Akses Terbatas</h2>
-        <p class="text-slate-300 max-w-lg mx-auto mb-6">
-            Anda belum login. Silakan login terlebih dahulu untuk membuka akses penuh ke dashboard, 
-            melihat daftar tiket, transaksi, dan fitur lainnya.
-        </p>
-        <a href="?action=login"
-           class="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-slate-900 font-bold rounded-lg transition">
-            <i class="fa-solid fa-right-to-bracket mr-2"></i> Login Sekarang
-        </a>
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+
+    <!-- HERO -->
+    <div class="pt-32 pb-24 px-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+            <!-- KIRI -->
+            <div>
+                <h1 class="text-4xl lg:text-5xl font-extrabold text-cyan-400 leading-tight mb-6">
+                    Sistem Manajemen Parkir <br>
+                </h1>
+
+                <p class="text-slate-300 text-lg mb-8 max-w-xl">
+                    Kelola kendaraan masuk & keluar secara otomatis, lengkap dengan barcode, 
+                    transaksi real-time, dan laporan profesional untuk usaha parkirmu.
+                </p>
+
+                <div class="flex gap-4">
+                    <a href="?action=login"
+                       class="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 text-slate-900 font-bold rounded-xl transition shadow-lg">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i> Masuk Sekarang
+                    </a>
+
+                    <a href="#fitur"
+                       class="px-8 py-3 border border-slate-600 hover:border-cyan-400 rounded-xl text-slate-300 transition">
+                        Lihat Fitur
+                    </a>
+                </div>
+            </div>
+
+            <!-- KANAN (ICON VISUAL) -->
+            <div class="hidden lg:flex justify-center relative">
+                <div class="absolute w-72 h-72 bg-cyan-500/20 blur-3xl rounded-full"></div>
+
+                <div class="grid grid-cols-2 gap-6 relative z-10">
+                    <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl text-center">
+                        <i class="fa-solid fa-ticket text-cyan-400 text-4xl mb-3"></i>
+                        <p class="text-sm text-slate-300">Tiket Otomatis</p>
+                    </div>
+
+                    <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl text-center">
+                        <i class="fa-solid fa-barcode text-purple-400 text-4xl mb-3"></i>
+                        <p class="text-sm text-slate-300">Barcode Unik</p>
+                    </div>
+
+                    <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl text-center">
+                        <i class="fa-solid fa-money-bill-wave text-green-400 text-4xl mb-3"></i>
+                        <p class="text-sm text-slate-300">Transaksi</p>
+                    </div>
+
+                    <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl text-center">
+                        <i class="fa-solid fa-chart-line text-amber-400 text-4xl mb-3"></i>
+                        <p class="text-sm text-slate-300">Laporan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- FITUR -->
+    <div id="fitur" class="pb-28 px-6">
+        <div class="max-w-7xl mx-auto">
+
+            <h2 class="text-3xl font-bold text-center text-cyan-400 mb-3">
+                Fitur Unggulan
+            </h2>
+
+            <p class="text-center text-slate-400 mb-12">
+                Semua yang kamu butuhkan untuk sistem parkir modern
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl hover:-translate-y-1 transition">
+                    <i class="fa-solid fa-ticket text-cyan-400 text-4xl mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Tiket Otomatis</h3>
+                    <p class="text-slate-300 text-sm">
+                        Setiap kendaraan masuk langsung mendapatkan tiket barcode unik.
+                    </p>
+                </div>
+
+                <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl hover:-translate-y-1 transition">
+                    <i class="fa-solid fa-cash-register text-green-400 text-4xl mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Transaksi Cepat</h3>
+                    <p class="text-slate-300 text-sm">
+                        Perhitungan tarif otomatis dan status pembayaran langsung tercatat.
+                    </p>
+                </div>
+
+                <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl hover:-translate-y-1 transition">
+                    <i class="fa-solid fa-chart-pie text-purple-400 text-4xl mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Laporan Real-time</h3>
+                    <p class="text-slate-300 text-sm">
+                        Pendapatan, kendaraan masuk-keluar, dan statistik ditampilkan langsung.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="border-t border-slate-700 py-6 text-center text-slate-400 text-sm">
+        © <?= date('Y') ?> Sistem Manajemen Parkir
+    </div>
+
+</div>
+
+
 <?php else: ?>
+
         <div class="mb-4">
         <?php
         if(isset($_SESSION['flash'])){
@@ -221,7 +317,10 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
                                 <?php endif; ?>
                             </td>
 
-                            <td class="px-4 py-2 text-slate-300">Rp <?= number_format($tiket['total_harga'], 0, ',', '.') ?></td>
+                           <td class="px-4 py-2 text-slate-300">
+                            Rp <?= number_format($tiket['total_harga'] ?? 0, 0, ',', '.') ?>
+                            </td>
+
 
                             <?php
                             $status = $tiket['status'] ?? '-';
@@ -243,25 +342,27 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             </table>
         </div>
     </div>
-    <div class="flex justify-center gap-2 mt-4">
-        <?php if ($page > 1): ?>
-            <a href="?page=<?= $page - 1 ?>" 
-            class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Prev</a>
-        <?php endif; ?>
+<div class="flex justify-center gap-2 mt-4">
+    <?php if ($pageTiket > 1): ?>
+        <a href="?page_tiket=<?= $pageTiket - 1 ?>" 
+        class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Prev</a>
+    <?php endif; ?>
 
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="?page=<?= $i ?>"
-            class="px-3 py-1 rounded 
-            <?= ($i == $page) ? 'bg-cyan-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600' ?>">
-                <?= $i ?>
-            </a>
-        <?php endfor; ?>
+    <?php for ($i = 1; $i <= $totalPagesTiket; $i++): ?>
+        <a href="?page_tiket=<?= $i ?>"
+        class="px-3 py-1 rounded 
+        <?= ($i == $pageTiket) ? 'bg-cyan-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600' ?>">
+            <?= $i ?>
+        </a>
+    <?php endfor; ?>
 
-        <?php if ($page < $totalPages): ?>
-            <a href="?page=<?= $page + 1 ?>" 
-            class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Next</a>
-        <?php endif; ?>
-    </div>
+    <?php if ($pageTiket < $totalPagesTiket): ?>
+        <a href="?page_tiket=<?= $pageTiket + 1 ?>" 
+        class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Next</a>
+    <?php endif; ?>
+</div>
+
+
 
     <!-- =================== TABLE TRANSAKSI =================== -->
     <div class="mt-10">
@@ -352,25 +453,26 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
             </table>
         </div>
     </div>
-    <div class="flex justify-center gap-2 mt-4">
-        <?php if ($page > 1): ?>
-            <a href="?page=<?= $page - 1 ?>" 
-            class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Prev</a>
-        <?php endif; ?>
+<div class="flex justify-center gap-2 mt-4">
+    <?php if ($pageTrx > 1): ?>
+        <a href="?page_trx=<?= $pageTrx - 1 ?>" 
+        class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Prev</a>
+    <?php endif; ?>
 
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="?page=<?= $i ?>"
-            class="px-3 py-1 rounded 
-            <?= ($i == $page) ? 'bg-cyan-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600' ?>">
-                <?= $i ?>
-            </a>
-        <?php endfor; ?>
+    <?php for ($i = 1; $i <= $totalPagesTrx; $i++): ?>
+        <a href="?page_trx=<?= $i ?>"
+        class="px-3 py-1 rounded 
+        <?= ($i == $pageTrx) ? 'bg-cyan-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600' ?>">
+            <?= $i ?>
+        </a>
+    <?php endfor; ?>
 
-        <?php if ($page < $totalPages): ?>
-            <a href="?page=<?= $page + 1 ?>" 
-            class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Next</a>
-        <?php endif; ?>
-    </div>
+    <?php if ($pageTrx < $totalPagesTrx): ?>
+        <a href="?page_trx=<?= $pageTrx + 1 ?>" 
+        class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Next</a>
+    <?php endif; ?>
+</div>
+
 
 <?php if($role === 'admin'): ?>
     <!-- =================== TABLE USER =================== -->
@@ -472,24 +574,26 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
         </div>
     </div>
 
-    <div class="flex justify-center gap-2 mt-4">
-        <?php if ($page > 1): ?>
-            <a href="?page=<?= $page - 1 ?>" 
-            class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Prev</a>
-        <?php endif; ?>
+<div class="flex justify-center gap-2 mt-4">
+    <?php if ($pageUser > 1): ?>
+        <a href="?page_user=<?= $pageUser - 1 ?>" 
+        class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Prev</a>
+    <?php endif; ?>
 
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="?page=<?= $i ?>"
-            class="px-3 py-1 rounded 
-            <?= ($i == $page) ? 'bg-cyan-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600' ?>">
-                <?= $i ?>
-            </a>
-        <?php endfor; ?>
+    <?php for ($i = 1; $i <= $totalPagesUser; $i++): ?>
+        <a href="?page_user=<?= $i ?>"
+        class="px-3 py-1 rounded 
+        <?= ($i == $pageUser) ? 'bg-cyan-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600' ?>">
+            <?= $i ?>
+        </a>
+    <?php endfor; ?>
 
-        <?php if ($page < $totalPages): ?>
-            <a href="?page=<?= $page + 1 ?>" 
-            class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Next</a>
-        <?php endif; ?>
-    </div>
+    <?php if ($pageUser < $totalPagesUser): ?>
+        <a href="?page_user=<?= $pageUser + 1 ?>" 
+        class="px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600">Next</a>
+    <?php endif; ?>
+</div>
+
+
 <?php endif; ?>
 <?php endif; ?>

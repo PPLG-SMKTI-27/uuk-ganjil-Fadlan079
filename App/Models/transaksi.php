@@ -18,6 +18,40 @@ class Transaksi {
         }
     }
 
+public function SelectPagination($limit, $offset){
+    $stmt = $this->pdo->prepare("
+        SELECT 
+            transaksi.*,
+            tiket.nomor_polisi
+        FROM transaksi
+        JOIN tiket ON transaksi.id_tiket = tiket.id_tiket
+        ORDER BY transaksi.id_transaksi DESC
+        LIMIT ? OFFSET ?
+    ");
+    
+    $stmt->bindValue(1, $limit, PDO::PARAM_INT);
+    $stmt->bindValue(2, $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function InsertTransaksiAuto($id_tiket, $jumlah_bayar, $metode){
+    $sql = "INSERT INTO transaksi 
+            (id_tiket, jumlah_bayar, metode, status, tgl_bayar)
+            VALUES 
+            (:id_tiket, :jumlah_bayar, :metode, 'paid', NOW())";
+
+    $stmt = $this->pdo->prepare($sql);
+    return $stmt->execute([
+        ':id_tiket'     => $id_tiket,
+        ':jumlah_bayar' => $jumlah_bayar,
+        ':metode'       => $metode
+    ]);
+}
+
+
+
     public function InsertTransaksi($id_tiket, $jumlah_bayar, $metode) {
         try {
             $sql = "INSERT INTO transaksi (id_tiket, jumlah_bayar, metode, status)
@@ -100,5 +134,6 @@ class Transaksi {
 // $transaksi->InsertTransaksi(2,10000,"cash");
 // $data = $transaksi->GetAllTransaksi();
 // $data = $transaksi->TotalBayar();
+// $data = $transaksi->SelectPagination(10,0);
 // var_dump($data);
 ?>

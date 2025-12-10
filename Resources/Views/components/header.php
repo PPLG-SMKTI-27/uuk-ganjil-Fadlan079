@@ -8,7 +8,7 @@
                 <i class="fa fa-car text-neutral-400 text-lg"></i>
             </div>
 
-            <h1 class="text-2xl font-bold text-cyan-500">Sistem <span class="text-neutral-400">Parkir</span></h1>
+            <h1 class="text-2xl font-bold text-cyan-500">Sistem Manajemen <span class="text-neutral-400">Parkir</span></h1>
         </div>
 
         <!-- TENGAH: MENU -->
@@ -64,14 +64,6 @@
                             <i class="fa-solid fa-arrow-right-from-bracket"></i> Tiket Keluar
                         </a>
                     </li>
-
-                    <li>
-                        <a href="?action=transaksi" 
-                            class="hover:text-cyan-400 transition <?= $current=='transaksi' ? 'border-b-2 border-cyan-400 text-cyan-400' : '' ?>">
-                            <i class="fa-solid fa-receipt"></i> Transaksi
-                        </a>
-                    </li>
-
                 <?php endif; ?>
 
             <?php endif; ?>
