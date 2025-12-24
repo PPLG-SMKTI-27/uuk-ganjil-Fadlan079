@@ -66,6 +66,7 @@ Salin kode
 ```bash
 git clone https://github.com/Fadlan079/Sistem-Manajemen-Parkir.git
 cd Sistem-Manajemen-Parkir
+<<<<<<< HEAD
 2. Install Dependency PHP
 bash
 Salin kode
@@ -115,3 +116,56 @@ Bebas digunakan untuk pembelajaran dan pengembangan.
 Author
 Fadlan
 GitHub: https://github.com/Fadlan079
+=======
+```
+
+### 2. Install Dependency PHP
+```bash
+composer install
+```
+
+### 3. Konfigurasi Database
+- Buat database baru di MySQL atau MariaDB
+- Atur koneksi database pada folder `Config/`
+
+### 4. Jalankan Server
+Jika menggunakan PHP built-in server:
+```bash
+php -S localhost:8000 -t Public/
+```
+
+Atau gunakan web server:
+- XAMPP
+- Laragon
+- Apache dan MySQL
+
+---
+
+## Alur Penggunaan Sistem
+
+### Petugas
+1. Login ke sistem
+2. Input kendaraan masuk
+3. Proses kendaraan keluar
+4. Sistem menghitung durasi dan biaya parkir
+
+### Admin
+1. Login sebagai admin
+2. Melihat data kendaraan
+3. Mengelola transaksi parkir
+4. Melihat laporan parkir
+
+---
+
+## Lisensi
+
+Project ini menggunakan lisensi MIT.  
+Bebas digunakan untuk pembelajaran dan pengembangan.
+
+---
+
+## Author
+
+Fadlan  
+GitHub: https://github.com/Fadlan079
+>>>>>>> 46f5b5a36a370bbb3f9cadc58cac5bace2737b11
