@@ -17,7 +17,7 @@ function alert($type, $message) {
     $style = $styles[$type] ?? $styles['info'];
     $icon  = $icons[$type] ?? $icons['info'];
 ?>
-    <div class="alert fixed top-20 left-1/2 transform -translate-x-1/2 p-4 mb-5 <?= $style ?> border rounded-lg flex items-center shadow-lg backdrop-blur-sm opacity-0 translate-y-[-50px] z-50" id="flashAlert">
+    <div class="alert fixed z-300 top-20 left-1/2 transform -translate-x-1/2 p-4 mb-5 <?= $style ?> border rounded-lg flex items-center shadow-lg backdrop-blur-sm opacity-0 translate-y-[-50px]" id="flashAlert">
         <i class="fa-solid <?= $icon ?> mr-2 text-xl"></i>
         <span class="font-medium"><?= $message ?></span>
     </div>

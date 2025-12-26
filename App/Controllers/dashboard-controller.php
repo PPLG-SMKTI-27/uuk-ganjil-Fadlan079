@@ -67,42 +67,49 @@ public function index(){
 
     public function StoreTiketMasuk() {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
-            $nomor_polisi       = $_POST['nomor_polisi'];
-            $jenis_kendaraan    = $_POST['jenis_kendaraan'];
-            $id_tarif           = $_POST['id_tarif'];
-            $tgl_masuk          = date("Y-m-d H:i:s");
-            $id_petugas_masuk   = $_SESSION['user']['id_user'];
-            $status             = "masuk";
+    // ================= AMBIL DATA DARI FORM
+    $nomor_polisi      = trim($_POST['nomor_polisi'] ?? '');
+    $jenis_kendaraan   = $_POST['jenis_kendaraan'];
+    $id_tarif          = $_POST['id_tarif'];
+    $tgl_masuk         = date("Y-m-d H:i:s");
+    $id_petugas_masuk  = $_SESSION['user']['id_user'];
+    $status            = "masuk";
 
-            $insert = $this->modelTiket->InsertTiketMasuk(
-                $nomor_polisi,
-                $jenis_kendaraan,
-                $id_tarif,
-                $tgl_masuk,
-                $id_petugas_masuk,
-                $status
-            );
-
-        if ($insert) {
-            $lastId = $this->modelTiket->lastInsertId(); // ambil id tiket terakhir
-
-            header("Location: ?action=preview-tiket&id=$lastId");
-            exit;
-
-
-            } else {
-                $_SESSION['flash'] = [
-                    'type' => 'error',
-                    'msg'  => 'Gagal Membuat Tiket'
-                ];
-                header("Location: ?action=tiket-masuk");
-                exit;
-            }
-
-        }
+    // ================= VALIDASI FINAL
+    if (empty($nomor_polisi)) {
+        $_SESSION['flash'] = [
+            'type' => 'error',
+            'msg'  => 'Nomor polisi wajib diisi'
+        ];
+        header("Location: ?action=tiket-masuk");
+        exit;
     }
+
+    // ================= INSERT DB
+    $insert = $this->modelTiket->InsertTiketMasuk(
+        $nomor_polisi,
+        $jenis_kendaraan,
+        $id_tarif,
+        $tgl_masuk,
+        $id_petugas_masuk,
+        $status
+    );
+
+    if ($insert) {
+        $lastId = $this->modelTiket->lastInsertId();
+        header("Location: ?action=preview-tiket&id=$lastId");
+        exit;
+    } else {
+        $_SESSION['flash'] = [
+            'type' => 'error',
+            'msg'  => 'Gagal Membuat Tiket'
+        ];
+        header("Location: ?action=tiket-masuk");
+        exit;
+    }
+}
 
     public function PreviewTiket() {
     $id = $_GET['id'];

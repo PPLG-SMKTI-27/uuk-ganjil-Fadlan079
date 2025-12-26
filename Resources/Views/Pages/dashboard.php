@@ -3,46 +3,68 @@
     $sessionUser = $_SESSION['user'] ?? null;
     $role = $sessionUser['role'] ?? null;
 
-    $statCards = [];
+$statCards = [];
 
-    if ($role === 'admin') {
-        $statCards[] = [
-            'icon'  => 'fa-users',
-            'color' => 'blue',
-            'label' => 'Total User',
-            'value' => $TotalUser
-        ];
-    }
-
-    foreach ($totalbayar as $t) {
-        $statCards[] = [
-            'icon'  => 'fa-money-bill-wave',
-            'color' => 'green',
-            'label' => 'Total Transaksi Selesai',
-            'value' => 'Rp ' . number_format($t, 0, ',', '.')
-        ];
-    }
-
+if ($role === 'admin') {
     $statCards[] = [
-        'icon'  => 'fa-right-to-bracket',
-        'color' => 'amber',
-        'label' => 'Total Kendaraan Masuk',
-        'value' => $Totalmasuk
+        'icon' => 'fa-users',
+        'color' => [
+            'text'   => 'text-blue-400',
+            'muted'  => 'text-blue-400/10',
+            'shadow' => 'hover:shadow-blue-500/20'
+        ],
+        'label' => 'Total User',
+        'value' => $TotalUser
     ];
+}
 
+foreach ($totalbayar as $t) {
     $statCards[] = [
-        'icon'  => 'fa-right-from-bracket',
-        'color' => 'red',
-        'label' => 'Total Kendaraan Keluar',
-        'value' => $Totalkeluar
+        'icon' => 'fa-money-bill-wave',
+        'color' => [
+            'text'   => 'text-green-400',
+            'muted'  => 'text-green-400/10',
+            'shadow' => 'hover:shadow-green-500/20'
+        ],
+        'label' => 'Total Transaksi Selesai',
+        'value' => 'Rp ' . number_format($t, 0, ',', '.')
     ];
+}
 
-    $statCards[] = [
-        'icon'  => 'fa-receipt',
-        'color' => 'purple',
-        'label' => 'Jumlah Transaksi',
-        'value' => $Totaltransaksi
-    ];
+$statCards[] = [
+    'icon' => 'fa-right-to-bracket',
+    'color' => [
+        'text'   => 'text-amber-400',
+        'muted'  => 'text-amber-400/10',
+        'shadow' => 'hover:shadow-amber-500/20'
+    ],
+    'label' => 'Total Kendaraan Masuk',
+    'value' => $Totalmasuk
+];
+
+$statCards[] = [
+    'icon' => 'fa-right-from-bracket',
+    'color' => [
+        'text'   => 'text-red-400',
+        'muted'  => 'text-red-400/10',
+        'shadow' => 'hover:shadow-red-500/20'
+    ],
+    'label' => 'Total Kendaraan Keluar',
+    'value' => $Totalkeluar
+];
+
+$statCards[] = [
+    'icon' => 'fa-receipt',
+    'color' => [
+        'text'   => 'text-purple-400',
+        'muted'  => 'text-purple-400/10',
+        'shadow' => 'hover:shadow-purple-500/20'
+    ],
+    'label' => 'Jumlah Transaksi',
+    'value' => $Totaltransaksi
+];
+
+
 ?>
 
 <!DOCTYPE html>
